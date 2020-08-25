@@ -68,8 +68,20 @@ int main() {
 		lte_frame = re_mapping_cell_specific_ref(  nCellId, CP,  n_RB,  lte_frame,   ref_sigs, n_antennaports, sf) ;
 	}
 	free(ref_sigs);
+	lte_frame = pbch_main(nBytes, message, nCellId, n_layers , n_codewords,  modulation_scheme, transmission_scheme,  is_CDD ,  n_antennaports,  code_bookindex , lte_frame, n_RB, CP);
+	int k,l,slot,frame_pos;
+	for ( k = 0; k < 12 * 100; ++k) {
+		for ( slot = 0; slot < 2; ++slot)
+		{
+			for ( l = 0; l < 7; ++l)
+			{
+				frame_pos = get_lte_frame_pos(slot, 7, k, l, 0 );
+				printf("%.5f+%.5fi,", GSL_REAL(lte_frame[frame_pos]), GSL_IMAG(lte_frame[frame_pos]));
+			}
+		}
+		printf("\n");
 
-	pbch_main(nBytes, message, nCellId, n_layers , n_codewords,  modulation_scheme, transmission_scheme,  is_CDD ,  n_antennaports,  code_bookindex , lte_frame, n_RB, CP);
+	}
 	free(lte_frame);
 	return 0;
 }
